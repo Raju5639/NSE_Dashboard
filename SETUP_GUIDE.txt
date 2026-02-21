@@ -1,0 +1,154 @@
+========================================
+NSE TRADING DASHBOARD - SETUP GUIDE
+========================================
+
+QUICK START (5 minutes)
+
+Step 1: Clone/Download Project
+- You should already have the project files in: c:\Users\suvar\Desktop\stock_Dashboard\NSE_Dashboard\
+
+Step 2: Install Python Requirements
+Open Command Prompt and run:
+
+  cd c:\Users\suvar\Desktop\stock_Dashboard\NSE_Dashboard
+  pip install -r requirements.txt
+
+Step 3: Download Chrome & ChromeDriver
+This is required for the OI Spurts feature.
+
+Option A: Automatic (Recommended)
+  1. Download from: https://chromedriver.chromium.org/
+  2. Choose your Chrome version (click Chrome menu → About Google Chrome to see version)
+  3. Download chromedriver.exe
+  4. Extract and place in C:\Windows\System32\
+
+Option B: Manual Installation
+  1. Install Google Chrome: https://www.google.com/chrome/
+  2. Download ChromeDriver from: https://chromedriver.chromium.org/
+  3. Place chromedriver.exe in the project folder
+
+Step 4: Verify ChromeDriver
+Open Command Prompt and type:
+  chromedriver --version
+
+If you see a version number, it's working!
+
+Step 5: Run the Dashboard
+Open Command Prompt in the project folder:
+  streamlit run app.py
+
+Your browser should automatically open the dashboard at localhost:8501
+
+========================================
+TROUBLESHOOTING
+========================================
+
+ERROR: "No module named 'streamlit'"
+FIX: Run: pip install -r requirements.txt
+
+ERROR: "Can't find chromedriver"
+FIX: 
+  1. Download from https://chromedriver.chromium.org/
+  2. Place in C:\Windows\System32\ OR
+  3. Add path to Windows PATH environment variable OR
+  4. Place directly in project folder
+
+ERROR: "OI Spurts tab is empty"
+FIX:
+  1. ChromeDriver not installed (see above)
+  2. Chrome browser not installed
+  3. Network connectivity issue
+  4. Try using fallback by waiting a few seconds
+
+ERROR: "API 404 errors"
+FIX: NSE might have rate-limited you. Wait 5 minutes and try again.
+
+ERROR: "Unicode encoding errors in terminal"
+FIX: This is normal on Windows - the data still loads fine in the app.
+
+========================================
+WHAT EACH TAB DOES
+========================================
+
+Tab 1: SECTOR OVERVIEW
+- Shows all 20+ NSE sectors with prices and changes
+- Displays sector performance chart
+- Export data as CSV
+
+Tab 2: STOCK ANALYSIS
+- Select a sector
+- See all stocks in that sector with detailed metrics
+- View Open Interest for stocks with active options trading
+- Download as CSV
+
+Tab 3: OI SPURTS (NEW!)
+- Shows "Open Interest Spurts" - stocks with most OI activity
+- Displays previous day OI vs current day OI
+- Shows absolute and percentage changes
+- Click "Refresh" to get latest data
+- Download as CSV
+
+Tab 4: SETTINGS
+- View system status
+- Understand data fields
+- See debug information
+
+========================================
+FEATURE HIGHLIGHTS
+========================================
+
+✓ Real-time NSE data (updates every 20-30 seconds)
+✓ 20+ sector indices with full metrics
+✓ Individual stock analysis
+✓ Open Interest data for options trading
+✓ OI Spurts showing surge in options activity
+✓ Market status detection (auto-closes on weekends)
+✓ CSV export for all data
+✓ Smart caching for performance
+✓ Responsive UI with charts
+
+========================================
+DATA SOURCES
+========================================
+
+All data comes directly from NSE:
+- Sector Data: NSE API
+- Stock Data: NSE API
+- OI Data: NSE API + Website (scraped)
+- Market Status: Programmatically detected
+
+========================================
+SYSTEM REQUIREMENTS
+========================================
+
+Operating System: Windows, Linux, or Mac
+Python: 3.8 or higher
+RAM: 4GB minimum (2GB okay for basic use)
+Disk: 500MB free space
+Internet: Required (high-speed recommended)
+Browser: Any modern browser (Chrome recommended)
+
+========================================
+NEXT STEPS
+========================================
+
+1. Start the dashboard: streamlit run app.py
+2. Click through each tab to familiarize yourself
+3. Try exporting data as CSV
+4. Check the Settings tab for more information
+5. Read README.md for detailed documentation
+
+========================================
+NEED HELP?
+========================================
+
+Check these files:
+- README.md - Comprehensive documentation
+- data_engine.py - NSE API connection code
+- app.py - Main dashboard code
+
+Common issues are documented in the README.md file.
+
+========================================
+Good luck with your trading analysis!
+========================================

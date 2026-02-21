@@ -1,0 +1,291 @@
+========================================
+IS NSE OI SPURTS FEATURE NOT WORKING?
+========================================
+
+Below are the solutions organized by the error you're seeing.
+
+========================================
+ISSUE #1: "Could not fetch OI Spurts data from website"
+========================================
+
+CAUSE: Chrome and/or ChromeDriver not installed/accessible
+
+SOLUTION:
+
+Step 1: Check if Chrome is installed
+- Click Start menu
+- Look for "Google Chrome" in the applications
+- If not found, download from: https://www.google.com/chrome/
+
+Step 2: Download ChromeDriver
+- Go to: https://chromedriver.chromium.org/
+- Look at your Chrome version: Chrome menu → About Google Chrome
+- Download the matching ChromeDriver version
+- Extract the ZIP file
+
+Step 3: Place ChromeDriver in an accessible location
+Choose ONE option:
+
+Option A (Easiest): C:\Windows\System32\
+- Copy chromedriver.exe to: C:\Windows\System32\
+- This makes it available system-wide
+
+Option B: Project Folder
+- Copy chromedriver.exe to: c:\Users\suvar\Desktop\stock_Dashboard\NSE_Dashboard\
+- Must be in the exact project folder
+
+Option C: Add to PATH (Advanced)
+- Right-click "This PC" → Properties
+- Click "Advanced system settings"
+- Click "Environment Variables"
+- Under System variables, click "Path" → "Edit"
+- Click "New" and add the folder containing chromedriver.exe
+- Click OK and restart your computer
+
+Step 4: Verify it works
+- Open Command Prompt
+- Type: chromedriver --version
+- You should see: ChromeDriver 120.x.x.x (version number)
+
+Step 5: Try the OI Spurts tab again
+- Go back to the Streamlit app
+- Click the "📊 OI Spurts" tab
+- Click "🔄 Refresh OI Spurts"
+
+========================================
+ISSUE #2: "Chrome/ChromeDriver not installed (required for web scraping)"
+========================================
+
+This warning appears when the app can't find Chrome or ChromeDriver.
+
+SOLUTION: Follow the steps in ISSUE #1 above
+
+Quick fix:
+1. Download from: https://chromedriver.chromium.org/
+2. Put chromedriver.exe in: C:\Windows\System32\
+3. Refresh the Streamlit app (press R or close and reopen browser)
+
+========================================
+ISSUE #3: OI Spurts tab shows empty table or "No data"
+========================================
+
+CAUSE: Data taking too long to load or table structure changed
+
+SOLUTION:
+
+Option 1: Wait longer and refresh
+- The first load takes 15-30 seconds for browser automation
+- Wait for the spinner to finish
+- Click "🔄 Refresh OI Spurts" button again
+
+Option 2: Enable verbose output
+- Check the terminal/console where you ran "streamlit run app.py"
+- Look for error messages with details
+- Screenshot the error and search online
+
+Option 3: Try alternative method
+- BeautifulSoup sometimes works when Selenium fails
+- If Selenium takes too long, Fallback is automatic
+- Wait 5 seconds for fallback to kick in
+
+Option 4: Manual refresh
+- Click the "🔄 Refresh OI Spurts" button
+- This bypasses the cache and fetches fresh data
+
+========================================
+ISSUE #4: Browser automation is very slow
+========================================
+
+CAUSE: First-time load with ChromeDriver requires time to start browser
+
+NORMAL BEHAVIOR: First load takes 15-30 seconds
+
+SOLUTION:
+- This is normal, especially first time
+- Subsequent loads use 2-minute cache
+- Consider your computer specs:
+  - Older PC: May take 30+ seconds
+  - Fast PC: May take 10-15 seconds
+- Be patient, don't close the tab
+
+To speed up future loads:
+- Cache is enabled (120-second TTL)
+- After first load, it uses cached data for 2 minutes
+- Don't over-refresh; let cache work
+
+========================================
+ISSUE #5: "NSE website temporarily unavailable"
+========================================
+
+CAUSE: NSE website is down or very slow
+
+SOLUTION:
+- Check if NSE website works: https://www.nseindia.com/market-data/oi-spurts
+- If website is slow, the scraper will be slow or timeout
+- Wait a few minutes and try again
+- Contact NSE if website is under maintenance
+
+========================================
+ISSUE #6: Getting diverse errors like "TimeoutError", "Connection refused"
+========================================
+
+CAUSE: Network issues or NSE throttling requests
+
+SOLUTION:
+
+Option 1: Wait and retry
+- NSE might be rate-limiting you
+- Wait 5-10 minutes before trying again
+
+Option 2: Check internet connection
+- Make sure you have stable internet
+- Try: ping 8.8.8.8 in command prompt
+- If it fails, fix internet connection first
+
+Option 3: Use mobile hotspot
+- Sometimes ISP throttles certain requests
+- Try a different internet source
+
+Option 4: Manually visit the website
+- Go to https://www.nseindia.com/market-data/oi-spurts
+- If this also fails/is slow, NSE might be having issues
+- Wait and try later
+
+========================================
+ISSUE #7: "ModuleNotFoundError: No module named 'selenium'"
+========================================
+
+CAUSE: Selenium not installed via pip
+
+SOLUTION: Install it now
+- Open Command Prompt
+- Navigate to project folder:
+  cd c:\Users\suvar\Desktop\stock_Dashboard\NSE_Dashboard
+- Run: pip install selenium beautifulsoup4
+- Wait for installation to complete
+- Refresh the Streamlit app
+
+========================================
+ISSUE #8: Works fine but data looks incomplete/wrong
+========================================
+
+POSSIBLE CAUSES:
+1. Website changed its HTML structure
+2. Table headers are different
+3. Page loads but content is cut off
+
+SOLUTION:
+- Wait a few minutes (website might be updating)
+- Try again
+- Check NSE website directly to compare
+
+If it keeps failing:
+- The feature might need an update
+- Compare your output with what's shown on NSE website
+- If no data appears anywhere, likely website/NSE issue
+
+========================================
+HOW THE OI SPURTS SCRAPER WORKS
+========================================
+
+Process:
+1. Start headless Chrome browser (no visible window)
+2. Navigate to: https://www.nseindia.com/market-data/oi-spurts
+3. Wait max 15 seconds for table to load (dynamically rendered)
+4. Extract HTML table rows
+5. Parse into DataFrame with columns:
+   - Symbol / Stock Name
+   - Open Interest (Previous Date)
+   - Open Interest (Current Date)
+   - Change in OI
+   - % Change in OI
+6. Convert numbers and cache for 2 minutes
+7. Display in Streamlit table
+
+Why this is needed:
+- NSE website loads data via JavaScript
+- Simple HTTP requests don't get the data
+- Browser automation retrieves rendered content
+- This matches exactly what you see on NSE website
+
+========================================
+PERFORMANCE TIPS
+========================================
+
+To make OI Spurts faster:
+
+1. Close other heavy applications
+   - Frees up RAM for Chrome
+   - Reduces time to start browser
+
+2. Use a faster computer
+   - Older computers take longer to start Chrome
+   - Nothing you can do about this
+
+3. Don't refresh too often
+   - Cache is 2 minutes
+   - Refreshing before cache expires wastes time
+
+4. Check internet speed
+   - Slow internet = slower page load
+   - Run: speedtest.net
+
+5. Restart the app occasionally
+   - Streamlit caches in memory
+   - Run: Ctrl+C in terminal, then "streamlit run app.py" again
+
+========================================
+GETTING HELP
+========================================
+
+If none of the above solutions work:
+
+1. Check Chrome & ChromeDriver versions match
+   - Chrome: Chrome menu → About Google Chrome
+   - ChromeDriver version must be same as Chrome
+
+2. Verify ChromeDriver is executable
+   - Windows: Right-click chromedriver.exe → Properties
+   - It should show as an application file
+   - You should see a command icon
+
+3. Try from Command Prompt
+   Just type: chromedriver
+   If it launches and shows running, it's working
+
+4. Read the terminal output
+   When Streamlit app runs, look at the terminal for:
+   - "Initializing driver"
+   - "Loading URL"
+   - Error messages with details
+
+5. See the README.md file
+   - Full documentation is in: README.md
+   - Common issues section has more info
+
+========================================
+STILL STUCK?
+========================================
+
+Here's what to do:
+
+1. Collect information:
+   - What error message do you see?
+   - What version of Chrome? (About Google Chrome)
+   - What OS? (Windows 10/11, etc.)
+   - Can you visit NSE website manually?
+
+2. Try alternatives:
+   - Use Tab 1 & 2 (Sector & Stock Analysis) - these use API
+   - They don't need ChromeDriver
+   - OI Spurts is just bonus feature
+
+3. Further options:
+   - Contact NSE about OI Spurts data access
+   - Check if there's an API they expose
+   - Use nsepython library (already installed)
+       - Though it also has OI limitations
+
+========================================
+Good luck!
+========================================
